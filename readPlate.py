@@ -1,17 +1,18 @@
 # Reading Car Plate Numbers
 import cv2
 import numpy as np
+import sys
 
 # get image
-fp = "car-plate-sample-1.jpg"
+fp = sys.argv[1]
 rawimg = cv2.imread(fp)
 
 # crop
 h = np.size(rawimg, 0)
 w = np.size(rawimg, 1)
 
-x = (int)(w * 0.05)
-y = (int)(h * 0.25)
+x = (int)(w * 0.04)
+y = (int)(h * 0.22)
 w = (int)(w - x)
 h = (int)(h - y)
 cropimg = rawimg[y:h, x:w]
@@ -25,7 +26,7 @@ if grayimg is None:
     print("error opening file\n")
 
 # seperate background
-thresh = 100
+thresh = 120
 maxval = 255
 th, dst = cv2.threshold(grayimg, thresh, maxval, cv2.THRESH_BINARY)
 cv2.imshow('raw', rawimg)
@@ -46,7 +47,6 @@ for contour in contours:
 
 cv2.drawContours(rawimg, contour_list,  -1, (0,180,255), 2, offset=rawoffset)
 cv2.imshow('Objects Detected Contour', rawimg)
-cv2.imshow('Objects Detected Box', cropimg)
 
 # wait for user to exit
 cv2.waitKey(0) 
